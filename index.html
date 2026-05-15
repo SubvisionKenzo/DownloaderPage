@@ -2,38 +2,27 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Store de fichiers</title>
+  <title>Doanloads page</title>
 </head>
 <body>
-  <h1>Store de fichiers</h1>
-  <p id="status">Recherche du fichier…</p>
+  <h1 style="color : red;">Page ou fichier inconnu.</h1>
+  <p>Si le téléchargement du fichier demandé n'a pas commencé il ce peut que nos serveur sois indisponnible ou que le fichier est était déplacé !
+  Pour plus d'information ou télécharger manuellement les fichier demandé rendé vous sur : <a href="https://subvisionkenzo.github.io/SubvisonWeb/">SubvisonWeb</a></p>
 
   <script>
+    // Récupère ?file=xxx dans l'URL
     const params = new URLSearchParams(window.location.search);
     const file = params.get('file');
 
-    if (!file) {
-      document.getElementById("status").textContent =
-        "Aucun fichier demandé. Ajoute ?file=nomdufichier.ext dans l’URL.";
-    } else {
-      const url = "downloads/" + file;
+    if (file) {
+      // Construire l'URL du fichier dans le dossier downloads
+      const basePath = 'downloads/'; // adapter si besoin
+      const targetUrl = basePath + file;
 
-      // Vérifier si le fichier existe
-      fetch(url, { method: "HEAD" })
-        .then(response => {
-          if (response.ok) {
-            document.getElementById("status").textContent =
-              "Fichier trouvé, téléchargement en cours…";
-            window.location.href = url;
-          } else {
-            document.getElementById("status").textContent =
-              "<p>Si le téléchargement du fichier demandé n'a pas commencé il ce peut que nos serveur sois indisponnible ou que le fichier est était déplacé !Pour plus d'information ou télécharger manuellement les fichier demandé rendé vous sur : <a href="https://subvisionkenzo.github.io/SubvisonWeb/">SubvisonWeb</a></p>";
-          }
-        })
-        .catch(() => {
-          document.getElementById("status").textContent =
-            "Erreur : impossible de vérifier le fichier.";
-        });
+      // Option 1 : redirection directe
+      window.location.href = targetUrl;
+
+      // Option 2 : si tu veux vérifier ou logger avant, tu peux faire un fetch, etc.
     }
   </script>
 </body>
